@@ -1,10 +1,33 @@
-import styles from '../styles/Home.module.css'
+import { authOptions } from "./api/auth/[...nextauth]";
+import { getServerSession } from "next-auth/next"
+import { signIn } from "next-auth/react";
 import Layout from '../components/layout'
 
-export default function Home() {
+export default function Home( ) {
   return (
-    <Layout pageTitle="Home">
-      <h1>Hello</h1>
-    </Layout>
-  )
+      <Layout>
+        <p><strong>Signin to view your dashboard!</strong></p>
+        <p>Not signed in</p>
+        <br />
+        <button onClick={() => signIn()}>Sign in</button>
+      </Layout>
+  );
+}
+
+export async function getServerSideProps(context) {
+  const session = await getServerSession(context.req, context.res, authOptions)
+
+  if (session) {
+    return {
+      redirect: {
+        destination: '/dashboard',
+        permanent: false,
+      },
+    }
+  }
+
+  return {
+    props: {
+    },
+  }
 }
