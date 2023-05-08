@@ -9,3 +9,9 @@
 .pfpclick {
     border: 3px var(--primary) solid;
 }
+
+.profileinfo {
+    position: relative;
+    top: 75px;
+    float: right;
+}

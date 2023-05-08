@@ -22,9 +22,13 @@ export default function Home( { user } ) {
   return (
     <Layout pageTitle="Dashboard">
       <img id="pfp" onClick={clickPfp} className={styles.pfp} src={user.image} alt="profile pic"></img>
-      <p>{user.email}</p>
-      <h4>Signed in as <strong>{user.name}</strong></h4>
-      <button onClick={() => signOut()}>Sign out</button>
+      {pfpClicked? 
+      <div className={styles.profileinfo}>
+        <p>{user.email}</p>
+        <h4>Signed in as <strong>{user.name}</strong></h4>
+        <button onClick={() => signOut()}>Sign out</button>
+      </div>
+      :<></>}
       <h2>All Habits</h2>
     </Layout>
   );
