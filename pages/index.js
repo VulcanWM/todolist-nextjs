@@ -5,7 +5,7 @@ import Layout from '../components/layout'
 
 export default function Home( ) {
   return (
-      <Layout>
+      <Layout pageTitle="Home">
         <p><strong>Signin to view your dashboard!</strong></p>
         <p>Not signed in</p>
         <br />
@@ -16,7 +16,6 @@ export default function Home( ) {
 
 export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions)
-
   if (session) {
     return {
       redirect: {
