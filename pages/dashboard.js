@@ -4,16 +4,28 @@ import { signOut } from "next-auth/react";
 import Layout from '../components/layout'
 import { get_user } from "../lib/database"
 import styles from '../styles/dashboard.module.css'
+import { useState } from "react";
 
 export default function Home( { user } ) {
+  const [pfpClicked, setPfpClicked] = useState(false)
   user = JSON.parse(user)
   console.log(user)
+  function clickPfp(){
+    if (pfpClicked == false){
+      document.getElementById("pfp").classList.add(styles.pfpclick);
+      setPfpClicked(true)
+    } else {
+      document.getElementById("pfp").classList.remove(styles.pfpclick);
+      setPfpClicked(false)
+    }
+  }
   return (
     <Layout pageTitle="Dashboard">
-      <img className={styles.pfp} src={user.image} alt="profile pic"></img>
+      <img id="pfp" onClick={clickPfp} className={styles.pfp} src={user.image} alt="profile pic"></img>
       <p>{user.email}</p>
       <h4>Signed in as <strong>{user.name}</strong></h4>
       <button onClick={() => signOut()}>Sign out</button>
+      <h2>All Habits</h2>
     </Layout>
   );
 }

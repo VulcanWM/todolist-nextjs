@@ -3,4 +3,9 @@
     height: 50px;
     border-radius: 50%;
     float: right;
+    border: 3px var(--background) solid;
+}
+
+.pfpclick {
+    border: 3px var(--primary) solid;
 }

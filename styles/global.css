@@ -3,6 +3,7 @@
   --font-color: black;
   --background: white;
   --light-background: #cdcac7;
+  --primary: #14a316;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -11,6 +12,7 @@
     --font-color: white;
     --background: #121212;
     --light-background: #2b2a2a;
+    --primary: #0ced6a;
   }
 }
 
