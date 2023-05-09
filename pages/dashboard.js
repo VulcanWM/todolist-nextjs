@@ -6,10 +6,9 @@ import { get_user } from "../lib/database"
 import styles from '../styles/dashboard.module.css'
 import { useState } from "react";
 
-export default function Home( { user } ) {
-  const [pfpClicked, setPfpClicked] = useState(false)
+export default function Home( { user, all_habits } ) {
   user = JSON.parse(user)
-  console.log(user)
+  const [pfpClicked, setPfpClicked] = useState(false)
   function clickPfp(){
     if (pfpClicked == false){
       document.getElementById("pfp").classList.add(styles.pfpclick);
@@ -19,6 +18,25 @@ export default function Home( { user } ) {
       setPfpClicked(false)
     }
   }
+
+  all_habits = JSON.parse(all_habits)
+  const [rowClicked, setRowClicked] = useState(all_habits)
+  function clickRow(title){
+    if (rowClicked[title] == true){
+      let copiedRowClicked = {...rowClicked};
+      copiedRowClicked[title] = false
+      setRowClicked( rowClicked => ({
+        ...copiedRowClicked
+      }));
+    } else {
+      let copiedRowClicked = {...rowClicked};
+      copiedRowClicked[title] = true
+      setRowClicked( rowClicked => ({
+        ...copiedRowClicked
+      }));
+    }
+  }
+
   return (
     <Layout pageTitle="Dashboard">
       <img id="pfp" onClick={clickPfp} className={styles.pfp} src={user.image} alt="profile pic"></img>
@@ -30,6 +48,12 @@ export default function Home( { user } ) {
       </div>
       :<></>}
       <h2>All Habits</h2>
+      {Object.keys(all_habits).map((title, index) => (
+        <div key={index}>
+          <h4 style={{cursor: "pointer"}} onClick={() => clickRow(title)}>{title}</h4>
+          {rowClicked[title] == true?<p>{all_habits[title]}</p>:<></>}
+        </div>
+      ))}
     </Layout>
   );
 }
@@ -48,9 +72,13 @@ export async function getServerSideProps(context) {
   const name = session.user.name
   const image = session.user.image
   const user = await get_user(email, name, image)
+  const all_habits = {"Title": "Description",
+   "Title 2": "this a random long piece of text yes very long it is even more longer now ha",
+  "Another Big Long Title": "woah"}
   return {
     props: {
-        user: JSON.stringify(user)
+        user: JSON.stringify(user),
+        all_habits: JSON.stringify(all_habits)
     },
   }
 }

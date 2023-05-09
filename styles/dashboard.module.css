@@ -11,7 +11,12 @@
 }
 
 .profileinfo {
-    position: relative;
+    border: 1px var(--light-background) solid;
+    position: fixed;
     top: 75px;
-    float: right;
+    right: 0;
+    text-align: right;
+    background-color: var(--light-background);
+    border-radius: 20%;
+    padding: 5px;
 }
