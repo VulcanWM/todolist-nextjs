@@ -5,6 +5,8 @@ import Layout from '../components/layout'
 import { get_user } from "../lib/database"
 import styles from '../styles/dashboard.module.css'
 import { useState } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPencil, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 
 export default function Home( { user, all_habits } ) {
   user = JSON.parse(user)
@@ -36,6 +38,15 @@ export default function Home( { user, all_habits } ) {
       }));
     }
   }
+  function clickTitle(title){
+    console.log("editing")
+    console.log(title)
+  }
+
+  function deleteTitle(title){
+    console.log("deleting")
+    console.log(title)
+  }
 
   return (
     <Layout pageTitle="Dashboard">
@@ -50,8 +61,10 @@ export default function Home( { user, all_habits } ) {
       <h2>All Habits</h2>
       {Object.keys(all_habits).map((title, index) => (
         <div key={index}>
-          <h4 style={{cursor: "pointer"}} onClick={() => clickRow(title)}>{title}</h4>
-          {rowClicked[title] == true?<p>{all_habits[title]}</p>:<></>}
+          <h4 style={{display: "inline",cursor: "pointer"}} onClick={() => clickRow(title)}>{title} </h4>
+          <FontAwesomeIcon onClick={() => clickTitle(title)} icon={faPencil} style={{width: "13px", height: "13px", cursor:"pointer"}}/>&#xA0;
+          <FontAwesomeIcon onClick={() => deleteTitle(title)} icon={faTrashCan} style={{width: "13px", height: "13px", cursor:"pointer"}}/><br/>
+          {rowClicked[title] == true?<p>{all_habits[title]}</p>:<br/>}
         </div>
       ))}
     </Layout>
