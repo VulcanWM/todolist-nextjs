@@ -2,14 +2,16 @@ import { authOptions } from "./api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next"
 import { signIn } from "next-auth/react";
 import Layout from '../components/layout'
+import styles from '../styles/index.module.css'
 
 export default function Home( ) {
   return (
       <Layout pageTitle="Home">
-        <p><strong>Signin to view your dashboard!</strong></p>
-        <p>Not signed in</p>
-        <br />
-        <button onClick={() => signIn()}>Sign in</button>
+        <div className={styles.content}>
+          <p><strong>Signin to view your dashboard!</strong></p>
+          <br />
+          <button onClick={() => signIn()}>Sign in</button>
+        </div>
       </Layout>
   );
 }
