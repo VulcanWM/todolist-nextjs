@@ -52,7 +52,7 @@ export default function Home( { user, all_habits } ) {
     <Layout pageTitle="Dashboard">
       <img id="pfp" onClick={clickPfp} className={styles.pfp} src={user.image} alt="profile pic"></img>
       {pfpClicked? 
-      <div className={styles.profileinfo}>
+      <div className={styles.profileinfo + " glass"}>
         <p>{user.email}</p>
         <h4>Signed in as <strong>{user.name}</strong></h4>
         <button onClick={() => signOut()}>Sign out</button>

@@ -8,6 +8,13 @@
   --light-background: #cdcac7;
   --font-color: black;
   --light-font: #383838;
+  --box-shadow: #d9d9d9;
+}
+.glass {
+  background: rgba( 255, 255, 255, 0.25 );
+  box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+  backdrop-filter: blur( 4px );
+  -webkit-backdrop-filter: blur( 4px );
 }
 
 @media (prefers-color-scheme: dark) {
@@ -21,6 +28,12 @@
     --light-background: #2b2a2a;
     --font-color: white;
     --light-font: #aabbc3;
+  }
+  .glass {
+    background: rgba( 18, 18, 18, 0.25 );
+    box-shadow: 0 8px 32px 0 rgba(31, 135, 43, 0.37);
+    backdrop-filter: blur( 4px );
+    -webkit-backdrop-filter: blur( 4px );
   }
 }
 
