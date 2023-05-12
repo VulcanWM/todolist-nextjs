@@ -2,8 +2,7 @@ import { authOptions } from "./api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next"
 import { signOut } from "next-auth/react";
 import Layout from '../components/layout'
-// import { get_user, get_habits } from "../lib/database"
-import { get_user } from "../lib/database"
+import { get_user, get_habits } from "../lib/database"
 import styles from '../styles/dashboard.module.css'
 import { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -86,22 +85,11 @@ export async function getServerSideProps(context) {
       },
     }
   }
-  console.log(session)
   const email = session.user.email
   const name = session.user.name
   const image = session.user.image
   const user = await get_user(email, name, image)
-  console.log(user)
-  // const all_habits = {"Title": "Description",
-  //  "Title 2": "this a random long piece of text yes very long it is even more longer now ha",
-  // "Another Big Long Title": "woah"}
-  const all_habits = [
-    {"title": "Title", "desc": "Description", "active": true},
-    {"title": "Title 2", "desc": "this a random long piece of text yes very long it is even more longer now ha", "active": false},
-    {"title": "Another Big Long Title", "desc": "woah", "active": true}
-  ]
-  console.log(all_habits)
-  // const all_habits = await get_habits(email)
+  const all_habits = await get_habits(email)
   return {
     props: {
         user: JSON.stringify(user),
