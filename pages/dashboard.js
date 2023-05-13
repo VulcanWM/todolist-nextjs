@@ -42,9 +42,32 @@ export default function Home( { user, all_habits } ) {
       }));
     }
   }
+  function finishedEditing(event) {
+    const index = event.target.id.replace("title", "")
+    const value = event.target.value
+    const input_el = document.getElementById(index + "title")
+    var text = document.createElement('h4');
+    text.innerText = all_habits[index].title + " "
+    text.id = index + "title"
+    text.style.display = 'inline'
+    text.style.cursor = "pointer"
+    input_el.parentNode.replaceChild(text, input_el);
+    document.getElementById(index + "edit").style.display = "inline"
+  }
   function clickTitle(index){
     console.log("editing")
-    console.log(index)
+    const title_el = document.getElementById(index + "title")
+    var input = document.createElement('input');
+    input.value = all_habits[index].title
+    input.id = index + "title"
+    input.addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        finishedEditing(event)
+      }
+    });
+    title_el.parentNode.replaceChild(input, title_el);
+    document.getElementById(index + "edit").style.display = "none"
   }
 
   function deleteTitle(index){
@@ -65,9 +88,9 @@ export default function Home( { user, all_habits } ) {
       <h2>All Habits</h2>
       {Object.keys(all_habits).map((index) => (
         <div key={index}>
-          <h4 style={{display: "inline",cursor: "pointer"}} onClick={() => clickRow(index)}>{all_habits[index].title} </h4>
-          <FontAwesomeIcon onClick={() => clickTitle(index)} icon={faPencil} style={{width: "13px", height: "13px", cursor:"pointer"}}/>&#xA0;
-          <FontAwesomeIcon onClick={() => deleteTitle(index)} icon={faTrashCan} style={{width: "13px", height: "13px", cursor:"pointer"}}/><br/>
+          <h4 id={index + "title"} style={{display: "inline",cursor: "pointer"}} onClick={() => clickRow(index)}>{all_habits[index].title} </h4>
+          <FontAwesomeIcon id={index + "edit"} onClick={() => clickTitle(index)} icon={faPencil} style={{width: "13px", height: "13px", cursor:"pointer"}}/>&#xA0;
+          <FontAwesomeIcon id={index + "delete"} onClick={() => deleteTitle(index)} icon={faTrashCan} style={{width: "13px", height: "13px", cursor:"pointer"}}/><br/>
           {rowClicked[index] == true?<p>{all_habits[index].desc}</p>:<br/>}
         </div>
       ))}
