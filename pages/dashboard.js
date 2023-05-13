@@ -46,18 +46,41 @@ export default function Home( { user, all_habits_list } ) {
   function finishedEditing(event) {
     const index = event.target.id.replace("title", "")
     const value = event.target.value
+    document.getElementById(index + "edit").style.display = "inline"
     const input_el = document.getElementById(index + "title")
     var text = document.createElement('h4');
-    text.innerText = all_habits[index].title + " "
+    if (value != all_habits[index].title){
+      text.innerHTML = value + " "
+      fetch("/api/edit_title", {
+        method: "POST",
+        body: JSON.stringify({
+          habit_id: all_habits[index]._id,
+          title: value,
+        }),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8"
+        }
+      })
+      .then(response => response.json())
+      .then(json => {
+        if (json.success == true){
+          let newArr = [...all_habits];
+          newArr[index].title = value;
+          setAllHabits(newArr);
+        } else {
+          console.log(json.msg)
+        }
+      });
+    } else {
+      text.innerText = all_habits[index].title + " "
+    }
     text.id = index + "title"
     text.style.display = 'inline'
     text.style.cursor = "pointer"
     input_el.parentNode.replaceChild(text, input_el);
-    document.getElementById(index + "edit").style.display = "inline"
   }
 
   function clickTitle(index){
-    console.log("editing")
     const title_el = document.getElementById(index + "title")
     var input = document.createElement('input');
     input.value = all_habits[index].title
@@ -73,8 +96,6 @@ export default function Home( { user, all_habits_list } ) {
   }
 
   function deleteTitle(index){
-    console.log("deleting")
-    console.log(index)
     const habit_id = all_habits[index]._id
     fetch("/api/delete_habit", {
       method: "POST",
@@ -91,14 +112,13 @@ export default function Home( { user, all_habits_list } ) {
         setAllHabits((current) =>
           current.filter((habit) => habit._id !== habit_id)
         );
-        // setAllHabits(oldArray => [...oldArray, json.data]);
       } else {
         console.log(json.msg)
       }
     });
   }
 
-  const addHabitFront = async (event) => {
+  const addHabitFront = (event) => {
     if (event.key === 'Enter') {
       if (event.target.value != ""){
         const title = event.target.value
