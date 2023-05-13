@@ -8,7 +8,7 @@ import { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPencil, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 
-export default function Home( { user, all_habits } ) {
+export default function Home( { user, all_habits_list } ) {
   user = JSON.parse(user)
   const [pfpClicked, setPfpClicked] = useState(false)
   function clickPfp(){
@@ -20,10 +20,10 @@ export default function Home( { user, all_habits } ) {
       setPfpClicked(false)
     }
   }
-
-  all_habits = JSON.parse(all_habits)
+  all_habits_list = JSON.parse(all_habits_list)
+  const [all_habits, setAllHabits] = useState(all_habits_list)
   const all_habits_dict = {}
-  all_habits.forEach((array, index) => {
+  all_habits_list.forEach((array, index) => {
     all_habits_dict[index] = false;
   });
   const [rowClicked, setRowClicked] = useState(all_habits_dict)
@@ -42,6 +42,7 @@ export default function Home( { user, all_habits } ) {
       }));
     }
   }
+
   function finishedEditing(event) {
     const index = event.target.id.replace("title", "")
     const value = event.target.value
@@ -54,6 +55,7 @@ export default function Home( { user, all_habits } ) {
     input_el.parentNode.replaceChild(text, input_el);
     document.getElementById(index + "edit").style.display = "inline"
   }
+
   function clickTitle(index){
     console.log("editing")
     const title_el = document.getElementById(index + "title")
@@ -75,6 +77,31 @@ export default function Home( { user, all_habits } ) {
     console.log(index)
   }
 
+  const addHabitFront = async (event) => {
+    if (event.key === 'Enter') {
+      if (event.target.value != ""){
+        console.log(event.target.value)
+        fetch("/api/add_habit", {
+          method: "POST",
+          body: JSON.stringify({
+            title: event.target.value
+          }),
+          headers: {
+            "Content-type": "application/json; charset=UTF-8"
+          }
+      })
+      .then(response => response.json())
+      .then(json => {
+        if (json.success == true){
+          setAllHabits(oldArray => [...oldArray, json.data]);
+        } else {
+          console.log(json.msg)
+        }
+      });
+      }
+    }
+  };
+
   return (
     <Layout pageTitle="Dashboard">
       <img id="pfp" onClick={clickPfp} className={styles.pfp} src={user.image} alt="profile pic"></img>
@@ -86,6 +113,8 @@ export default function Home( { user, all_habits } ) {
       </div>
       :<></>}
       <h2>All Habits</h2>
+      {all_habits.length>=20?<></>:
+      <><input type="text" placeholder="New Habit.." onKeyDown={addHabitFront}/><br/><br/></>}
       {Object.keys(all_habits).map((index) => (
         <div key={index}>
           <h4 id={index + "title"} style={{display: "inline",cursor: "pointer"}} onClick={() => clickRow(index)}>{all_habits[index].title} </h4>
@@ -116,7 +145,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
         user: JSON.stringify(user),
-        all_habits: JSON.stringify(all_habits)
+        all_habits_list: JSON.stringify(all_habits)
     },
   }
 }
