@@ -10,7 +10,7 @@ import { faPencil, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import Cookies from 'cookies'
 
 export default function Home( { user } ) {
-  var all_habits_list = "[]"
+  // var all_todos_list = "[]"
   user = JSON.parse(user)
   const [pfpClicked, setPfpClicked] = useState(false)
   function clickPfp(){
@@ -22,109 +22,90 @@ export default function Home( { user } ) {
       setPfpClicked(false)
     }
   }
-  all_habits_list = JSON.parse(all_habits_list)
-  const [all_habits, setAllHabits] = useState(all_habits_list)
-  const all_habits_dict = {}
-  all_habits_list.forEach((array, index) => {
-    all_habits_dict[index] = false;
-  });
-  const [rowClicked, setRowClicked] = useState(all_habits_dict)
-  function clickRow(index){
-    if (rowClicked[index] == true){
-      let copiedRowClicked = {...rowClicked};
-      copiedRowClicked[index] = false
-      setRowClicked( rowClicked => ({
-        ...copiedRowClicked
-      }));
-    } else {
-      let copiedRowClicked = {...rowClicked};
-      copiedRowClicked[index] = true
-      setRowClicked( rowClicked => ({
-        ...copiedRowClicked
-      }));
-    }
-  }
+  const all_todos_list = user.todo
+  // const all_todos_list = [{title: "Project 1", done: true}, {title: "Project 197", done: false}]
+  const [all_todos, setAlltodos] = useState(all_todos_list)
+  console.log(all_todos)
+  // function finishedEditing(event) {
+  //   const index = event.target.id.replace("title", "")
+  //   const value = event.target.value
+  //   document.getElementById(index + "edit").style.display = "inline"
+  //   const input_el = document.getElementById(index + "title")
+  //   var text = document.createElement('h4');
+  //   if (value != all_todos[index].title){
+  //     text.innerHTML = value + " "
+  //     fetch("/api/edit_title", {
+  //       method: "POST",
+  //       body: JSON.stringify({
+  //         todo_id: all_todos[index]._id,
+  //         title: value,
+  //       }),
+  //       headers: {
+  //         "Content-type": "application/json; charset=UTF-8"
+  //       }
+  //     })
+  //     .then(response => response.json())
+  //     .then(json => {
+  //       if (json.success == true){
+  //         let newArr = [...all_todos];
+  //         newArr[index].title = value;
+  //         setAlltodos(newArr);
+  //       } else {
+  //         console.log(json.msg)
+  //       }
+  //     });
+  //   } else {
+  //     text.innerText = all_todos[index].title + " "
+  //   }
+  //   text.id = index + "title"
+  //   text.style.display = 'inline'
+  //   text.style.cursor = "pointer"
+  //   input_el.parentNode.replaceChild(text, input_el);
+  // }
 
-  function finishedEditing(event) {
-    const index = event.target.id.replace("title", "")
-    const value = event.target.value
-    document.getElementById(index + "edit").style.display = "inline"
-    const input_el = document.getElementById(index + "title")
-    var text = document.createElement('h4');
-    if (value != all_habits[index].title){
-      text.innerHTML = value + " "
-      fetch("/api/edit_title", {
-        method: "POST",
-        body: JSON.stringify({
-          habit_id: all_habits[index]._id,
-          title: value,
-        }),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8"
-        }
-      })
-      .then(response => response.json())
-      .then(json => {
-        if (json.success == true){
-          let newArr = [...all_habits];
-          newArr[index].title = value;
-          setAllHabits(newArr);
-        } else {
-          console.log(json.msg)
-        }
-      });
-    } else {
-      text.innerText = all_habits[index].title + " "
-    }
-    text.id = index + "title"
-    text.style.display = 'inline'
-    text.style.cursor = "pointer"
-    input_el.parentNode.replaceChild(text, input_el);
-  }
+  // function clickTitle(index){
+  //   const title_el = document.getElementById(index + "title")
+  //   var input = document.createElement('input');
+  //   input.value = all_todos[index].title
+  //   input.id = index + "title"
+  //   input.addEventListener("keypress", function(event) {
+  //     if (event.key === "Enter") {
+  //       event.preventDefault();
+  //       finishedEditing(event)
+  //     }
+  //   });
+  //   title_el.parentNode.replaceChild(input, title_el);
+  //   document.getElementById(index + "edit").style.display = "none"
+  // }
 
-  function clickTitle(index){
-    const title_el = document.getElementById(index + "title")
-    var input = document.createElement('input');
-    input.value = all_habits[index].title
-    input.id = index + "title"
-    input.addEventListener("keypress", function(event) {
-      if (event.key === "Enter") {
-        event.preventDefault();
-        finishedEditing(event)
-      }
-    });
-    title_el.parentNode.replaceChild(input, title_el);
-    document.getElementById(index + "edit").style.display = "none"
-  }
+  // function deleteTitle(index){
+  //   const todo_id = all_todos[index]._id
+  //   fetch("/api/delete_todo", {
+  //     method: "POST",
+  //     body: JSON.stringify({
+  //       todo_id: todo_id
+  //     }),
+  //     headers: {
+  //       "Content-type": "application/json; charset=UTF-8"
+  //     }
+  //   })
+  //   .then(response => response.json())
+  //   .then(json => {
+  //     if (json.success == true){
+  //       setAlltodos((current) =>
+  //         current.filter((todo) => todo._id !== todo_id)
+  //       );
+  //     } else {
+  //       console.log(json.msg)
+  //     }
+  //   });
+  // }
 
-  function deleteTitle(index){
-    const habit_id = all_habits[index]._id
-    fetch("/api/delete_habit", {
-      method: "POST",
-      body: JSON.stringify({
-        habit_id: habit_id
-      }),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8"
-      }
-    })
-    .then(response => response.json())
-    .then(json => {
-      if (json.success == true){
-        setAllHabits((current) =>
-          current.filter((habit) => habit._id !== habit_id)
-        );
-      } else {
-        console.log(json.msg)
-      }
-    });
-  }
-
-  const addHabitFront = (event) => {
+  const addtodoFront = (event) => {
     if (event.key === 'Enter') {
       if (event.target.value != ""){
         const title = event.target.value
-        fetch("/api/add_habit", {
+        fetch("/api/add_todo", {
           method: "POST",
           body: JSON.stringify({
             title: title,
@@ -136,7 +117,7 @@ export default function Home( { user } ) {
         .then(response => response.json())
         .then(json => {
           if (json.success == true){
-            setAllHabits(oldArray => [...oldArray, json.data]);
+            setAlltodos(json.data);
             event.target.value = ""
           } else {
             console.log(json.msg)
@@ -155,15 +136,14 @@ export default function Home( { user } ) {
         <button onClick={() => signOut()}>Sign out</button>
       </div>
       :<></>}
-      <h2>All Habits</h2>
-      {all_habits.length>=20?<></>:
-      <><input type="text" placeholder="New Habit.." onKeyDown={addHabitFront}/><br/><br/></>}
-      {Object.keys(all_habits).map((index) => (
+      <h2>All todos</h2>
+      {all_todos.length>=20?<></>:
+      <><input type="text" placeholder="New todo.." onKeyDown={addtodoFront}/><br/><br/></>}
+      {Object.keys(all_todos).map((index) => (
         <div key={index}>
-          <h4 id={index + "title"} style={{display: "inline",cursor: "pointer"}} onClick={() => clickRow(index)}>{all_habits[index].title} </h4>
+          <h4 id={index + "title"} style={{display: "inline",cursor: "pointer"}} onClick={() => clickRow(index)}>{all_todos[index].title} </h4>
           <FontAwesomeIcon id={index + "edit"} onClick={() => clickTitle(index)} icon={faPencil} style={{width: "13px", height: "13px", cursor:"pointer"}}/>&#xA0;
-          <FontAwesomeIcon id={index + "delete"} onClick={() => deleteTitle(index)} icon={faTrashCan} style={{width: "13px", height: "13px", cursor:"pointer"}}/><br/>
-          {rowClicked[index] == true?<p>{all_habits[index].desc}</p>:<br/>}
+          <FontAwesomeIcon id={index + "delete"} onClick={() => deleteTitle(index)} icon={faTrashCan} style={{width: "13px", height: "13px", cursor:"pointer"}}/><br/><br/>
         </div>
       ))}
     </Layout>
