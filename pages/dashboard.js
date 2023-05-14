@@ -25,7 +25,6 @@ export default function Home( { user } ) {
   const all_todos_list = user.todo
   // const all_todos_list = [{title: "Project 1", done: true}, {title: "Project 197", done: false}]
   const [all_todos, setAlltodos] = useState(all_todos_list)
-  console.log(all_todos)
   // function finishedEditing(event) {
   //   const index = event.target.id.replace("title", "")
   //   const value = event.target.value
@@ -78,28 +77,25 @@ export default function Home( { user } ) {
   //   document.getElementById(index + "edit").style.display = "none"
   // }
 
-  // function deleteTitle(index){
-  //   const todo_id = all_todos[index]._id
-  //   fetch("/api/delete_todo", {
-  //     method: "POST",
-  //     body: JSON.stringify({
-  //       todo_id: todo_id
-  //     }),
-  //     headers: {
-  //       "Content-type": "application/json; charset=UTF-8"
-  //     }
-  //   })
-  //   .then(response => response.json())
-  //   .then(json => {
-  //     if (json.success == true){
-  //       setAlltodos((current) =>
-  //         current.filter((todo) => todo._id !== todo_id)
-  //       );
-  //     } else {
-  //       console.log(json.msg)
-  //     }
-  //   });
-  // }
+  function deleteTodo(title){
+    fetch("/api/delete_todo", {
+      method: "POST",
+      body: JSON.stringify({
+        title: title,
+      }),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8"
+      }
+    })
+    .then(response => response.json())
+    .then(json => {
+      if (json.success == true){
+        setAlltodos(json.data);
+      } else {
+        console.log(json.msg)
+      }
+    });
+  }
 
   const addtodoFront = (event) => {
     if (event.key === 'Enter') {
@@ -143,7 +139,7 @@ export default function Home( { user } ) {
         <div key={index}>
           <h4 id={index + "title"} style={{display: "inline",cursor: "pointer"}} onClick={() => clickRow(index)}>{all_todos[index].title} </h4>
           <FontAwesomeIcon id={index + "edit"} onClick={() => clickTitle(index)} icon={faPencil} style={{width: "13px", height: "13px", cursor:"pointer"}}/>&#xA0;
-          <FontAwesomeIcon id={index + "delete"} onClick={() => deleteTitle(index)} icon={faTrashCan} style={{width: "13px", height: "13px", cursor:"pointer"}}/><br/><br/>
+          <FontAwesomeIcon id={index + "delete"} onClick={() => deleteTodo(all_todos[index].title)} icon={faTrashCan} style={{width: "13px", height: "13px", cursor:"pointer"}}/><br/><br/>
         </div>
       ))}
     </Layout>

@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth/next"
 import { authOptions } from './auth/[...nextauth]';
-import { add_todo } from "../../lib/database";
+import { delete_todo } from "../../lib/database";
 import Cookies from 'cookies'
 
 export default async function handler(req, res) {
@@ -10,7 +10,6 @@ export default async function handler(req, res) {
       res.status(200).json({ success: false, msg: "You have to be logged in!", data: null });
       return;
     }
-    const title = req.body.title;
     const userid = session.user.id
     var username;
     const cookies = new Cookies(req, res)
@@ -23,12 +22,9 @@ export default async function handler(req, res) {
       const data = await resp.json();
       username = data['login']
     }
-    const todos = await add_todo(username, title)
-    if (typeof todos == "string"){
-        res.status(200).json({ success: false, msg: todos, data: null });
-    } else {
-        res.status(200).json({ success: true, msg: null, data: todos });
-    }
+    const title = req.body.title;
+    const todos = await delete_todo(username, title)
+    res.status(200).json({ success: true, msg: null, data: todos });
   } else {
     res.status(200).json({ success: false, msg: "Send a POST request", data: null });
   }
