@@ -2,13 +2,15 @@ import { authOptions } from "./api/auth/[...nextauth]";
 import { getServerSession } from "next-auth/next"
 import { signOut } from "next-auth/react";
 import Layout from '../components/layout'
-import { get_user, get_habits } from "../lib/database"
+import { get_user } from "../lib/database"
 import styles from '../styles/dashboard.module.css'
 import { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPencil, faTrashCan } from '@fortawesome/free-solid-svg-icons'
+import Cookies from 'cookies'
 
-export default function Home( { user, all_habits_list } ) {
+export default function Home( { user } ) {
+  var all_habits_list = "[]"
   user = JSON.parse(user)
   const [pfpClicked, setPfpClicked] = useState(false)
   function clickPfp(){
@@ -149,8 +151,7 @@ export default function Home( { user, all_habits_list } ) {
       <img id="pfp" onClick={clickPfp} className={styles.pfp} src={user.image} alt="profile pic"></img>
       {pfpClicked? 
       <div className={styles.profileinfo + " glass"}>
-        <p>{user.email}</p>
-        <h4>Signed in as <strong>{user.name}</strong></h4>
+        <h4>Signed in as <strong>{user.username}</strong></h4>
         <button onClick={() => signOut()}>Sign out</button>
       </div>
       :<></>}
@@ -179,15 +180,25 @@ export async function getServerSideProps(context) {
       },
     }
   }
-  const email = session.user.email
-  const name = session.user.name
   const image = session.user.image
-  const user = await get_user(email, name, image)
-  const all_habits = await get_habits(email)
+  var username;
+  var userId = session.user.image.split("/u/")[1]
+  userId = userId.split("?v=")[0]
+  const cookies = new Cookies(context.req, context.res)
+  if (cookies.get("Username")){
+    username = cookies.get("Username")
+  } else {
+    const resp = await fetch(
+      `https://api.github.com/user/${userId}`
+    );
+    const data = await resp.json();
+    username = data['login']
+    cookies.set('Username', username)
+  }
+  const user = await get_user(username, image)
   return {
     props: {
         user: JSON.stringify(user),
-        all_habits_list: JSON.stringify(all_habits)
     },
   }
 }
