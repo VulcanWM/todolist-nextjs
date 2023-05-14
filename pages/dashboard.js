@@ -23,59 +23,57 @@ export default function Home( { user } ) {
     }
   }
   const all_todos_list = user.todo
-  // const all_todos_list = [{title: "Project 1", done: true}, {title: "Project 197", done: false}]
   const [all_todos, setAlltodos] = useState(all_todos_list)
-  // function finishedEditing(event) {
-  //   const index = event.target.id.replace("title", "")
-  //   const value = event.target.value
-  //   document.getElementById(index + "edit").style.display = "inline"
-  //   const input_el = document.getElementById(index + "title")
-  //   var text = document.createElement('h4');
-  //   if (value != all_todos[index].title){
-  //     text.innerHTML = value + " "
-  //     fetch("/api/edit_title", {
-  //       method: "POST",
-  //       body: JSON.stringify({
-  //         todo_id: all_todos[index]._id,
-  //         title: value,
-  //       }),
-  //       headers: {
-  //         "Content-type": "application/json; charset=UTF-8"
-  //       }
-  //     })
-  //     .then(response => response.json())
-  //     .then(json => {
-  //       if (json.success == true){
-  //         let newArr = [...all_todos];
-  //         newArr[index].title = value;
-  //         setAlltodos(newArr);
-  //       } else {
-  //         console.log(json.msg)
-  //       }
-  //     });
-  //   } else {
-  //     text.innerText = all_todos[index].title + " "
-  //   }
-  //   text.id = index + "title"
-  //   text.style.display = 'inline'
-  //   text.style.cursor = "pointer"
-  //   input_el.parentNode.replaceChild(text, input_el);
-  // }
 
-  // function clickTitle(index){
-  //   const title_el = document.getElementById(index + "title")
-  //   var input = document.createElement('input');
-  //   input.value = all_todos[index].title
-  //   input.id = index + "title"
-  //   input.addEventListener("keypress", function(event) {
-  //     if (event.key === "Enter") {
-  //       event.preventDefault();
-  //       finishedEditing(event)
-  //     }
-  //   });
-  //   title_el.parentNode.replaceChild(input, title_el);
-  //   document.getElementById(index + "edit").style.display = "none"
-  // }
+  function finishedEditing(event) {
+    const index = event.target.id.replace("title", "")
+    const value = event.target.value
+    document.getElementById(index + "edit").style.display = "inline"
+    const input_el = document.getElementById(index + "title")
+    var text = document.createElement('h4');
+    if (value != all_todos[index].title){
+      text.innerHTML = value + " "
+      fetch("/api/edit_todo", {
+        method: "POST",
+        body: JSON.stringify({
+          oldTitle: all_todos[index].title,
+          newTitle: value,
+        }),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8"
+        }
+      })
+      .then(response => response.json())
+      .then(json => {
+        if (json.success == true){
+          setAlltodos(json.data);
+        } else {
+          console.log(json.msg)
+        }
+      });
+    } else {
+      text.innerText = all_todos[index].title + " "
+    }
+    text.id = index + "title"
+    text.style.display = 'inline'
+    text.style.cursor = "pointer"
+    input_el.parentNode.replaceChild(text, input_el);
+  }
+
+  function clickTitle(index){
+    const title_el = document.getElementById(index + "title")
+    var input = document.createElement('input');
+    input.value = all_todos[index].title
+    input.id = index + "title"
+    input.addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        finishedEditing(event)
+      }
+    });
+    title_el.parentNode.replaceChild(input, title_el);
+    document.getElementById(index + "edit").style.display = "none"
+  }
 
   function deleteTodo(title){
     fetch("/api/delete_todo", {
