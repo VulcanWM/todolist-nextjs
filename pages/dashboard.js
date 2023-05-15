@@ -29,6 +29,7 @@ export default function Home( { user } ) {
     const index = event.target.id.replace("title", "")
     const value = event.target.value
     document.getElementById(index + "edit").style.display = "inline"
+    document.getElementById(index + "check").style.display = "inline"
     const input_el = document.getElementById(index + "title")
     var text = document.createElement('h4');
     if (value != all_todos[index].title){
@@ -73,6 +74,7 @@ export default function Home( { user } ) {
     });
     title_el.parentNode.replaceChild(input, title_el);
     document.getElementById(index + "edit").style.display = "none"
+    document.getElementById(index + "check").style.display = "none"
   }
 
   function deleteTodo(title){
@@ -121,6 +123,11 @@ export default function Home( { user } ) {
     }
   };
 
+  function checkboxClick(index) {
+    console.log(index)
+    console.log(document.getElementById(index + "checkbox").checked)
+  }
+
   return (
     <Layout pageTitle="Dashboard">
       <img id="pfp" onClick={clickPfp} className={styles.pfp} src={user.image} alt="profile pic"></img>
@@ -135,7 +142,8 @@ export default function Home( { user } ) {
       <><input type="text" placeholder="New todo.." onKeyDown={addtodoFront}/><br/><br/></>}
       {Object.keys(all_todos).map((index) => (
         <div key={index}>
-          <h4 id={index + "title"} style={{display: "inline",cursor: "pointer"}} onClick={() => clickRow(index)}>{all_todos[index].title} </h4>
+          <label id={index + "check"}><input id={index + "checkbox"} type='checkbox' onClick={() => checkboxClick(index)}/></label>
+          <h4 id={index + "title"} style={{display: "inline",cursor: "pointer", textDecoration: all_todos[index].done ? "line-through" : "none"}} onClick={() => clickRow(index)}>{all_todos[index].title} </h4>
           <FontAwesomeIcon id={index + "edit"} onClick={() => clickTitle(index)} icon={faPencil} style={{width: "13px", height: "13px", cursor:"pointer"}}/>&#xA0;
           <FontAwesomeIcon id={index + "delete"} onClick={() => deleteTodo(all_todos[index].title)} icon={faTrashCan} style={{width: "13px", height: "13px", cursor:"pointer"}}/><br/><br/>
         </div>
