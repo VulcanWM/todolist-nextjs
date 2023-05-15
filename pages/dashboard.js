@@ -125,7 +125,26 @@ export default function Home( { user } ) {
 
   function checkboxClick(index) {
     console.log(index)
-    console.log(document.getElementById(index + "checkbox").checked)
+    const newStatus = document.getElementById(index + "checkbox").checked
+    const title = all_todos[index].title
+    fetch("/api/change_todo_status", {
+      method: "POST",
+      body: JSON.stringify({
+        title: title,
+        newStatus: newStatus
+      }),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8"
+      }
+    })
+    .then(response => response.json())
+    .then(json => {
+      if (json.success == true){
+        setAlltodos(json.data);
+      } else {
+        console.log(json.msg)
+      }
+    });
   }
 
   return (
@@ -142,7 +161,7 @@ export default function Home( { user } ) {
       <><input type="text" placeholder="New todo.." onKeyDown={addtodoFront}/><br/><br/></>}
       {Object.keys(all_todos).map((index) => (
         <div key={index}>
-          <label id={index + "check"}><input id={index + "checkbox"} type='checkbox' onClick={() => checkboxClick(index)}/></label>
+          <label id={index + "check"}><input checked={all_todos[index].done} id={index + "checkbox"} type='checkbox' onClick={() => checkboxClick(index)}/></label>
           <h4 id={index + "title"} style={{display: "inline",cursor: "pointer", textDecoration: all_todos[index].done ? "line-through" : "none"}} onClick={() => clickRow(index)}>{all_todos[index].title} </h4>
           <FontAwesomeIcon id={index + "edit"} onClick={() => clickTitle(index)} icon={faPencil} style={{width: "13px", height: "13px", cursor:"pointer"}}/>&#xA0;
           <FontAwesomeIcon id={index + "delete"} onClick={() => deleteTodo(all_todos[index].title)} icon={faTrashCan} style={{width: "13px", height: "13px", cursor:"pointer"}}/><br/><br/>
