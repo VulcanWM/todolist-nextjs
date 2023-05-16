@@ -21,6 +21,9 @@ export default function Home( { user } ) {
       setPfpClicked(false)
     }
   }
+
+  const [errorMessages, setErrorMessages] = useState([])
+
   const all_todos_list = user.todo
   const [all_todos, setAlltodos] = useState(all_todos_list)
 
