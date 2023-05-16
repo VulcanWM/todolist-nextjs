@@ -162,14 +162,10 @@ export default function Home( { user } ) {
       <><input type="text" placeholder="New todo.." onKeyDown={addtodoFront}/><br/><br/></>}
       {Object.keys(all_todos).map((index) => (
         <div key={index} className={all_todos[index].done ? "fontdarker" : ""}>
-          <label className={styles.container}> 
-            <h4 id={index + "title"} style={{display: "inline",cursor: "pointer", textDecoration: all_todos[index].done ? "line-through" : "none"}}>{all_todos[index].title} </h4>
-            <FontAwesomeIcon id={index + "edit"} onClick={() => clickTitle(index)} icon={faPencil} style={{width: "13px", height: "13px", cursor:"pointer"}}/>&#xA0;
-            <FontAwesomeIcon id={index + "delete"} onClick={() => deleteTodo(all_todos[index].title)} icon={faTrashCan} style={{width: "13px", height: "13px", cursor:"pointer"}}/>
-            <input onClick={() => checkboxClick(index)} id={index + "checkbox"} type="checkbox" checked={all_todos[index].done}/>
-            <span className={styles.checkmark}></span>
-          </label>
-         
+          <label id={index + "check"}><input checked={all_todos[index].done} id={index + "checkbox"} type='checkbox' onClick={() => checkboxClick(index)}/></label>
+          <h4 id={index + "title"} style={{display: "inline",cursor: "pointer", textDecoration: all_todos[index].done ? "line-through" : "none"}}>{all_todos[index].title} </h4>
+          <FontAwesomeIcon id={index + "edit"} onClick={() => clickTitle(index)} icon={faPencil} style={{width: "13px", height: "13px", cursor:"pointer"}}/>&#xA0;
+          <FontAwesomeIcon id={index + "delete"} onClick={() => deleteTodo(all_todos[index].title)} icon={faTrashCan} style={{width: "13px", height: "13px", cursor:"pointer"}}/><br/><br/>
         </div>
       ))}
     </Layout>
