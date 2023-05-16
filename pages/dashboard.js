@@ -10,7 +10,6 @@ import { faPencil, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import Cookies from 'cookies'
 
 export default function Home( { user } ) {
-  // var all_todos_list = "[]"
   user = JSON.parse(user)
   const [pfpClicked, setPfpClicked] = useState(false)
   function clickPfp(){
@@ -159,13 +158,13 @@ export default function Home( { user } ) {
       :<></>}
       <h2>All todos</h2>
       {all_todos.length>=20?<></>:
-      <><input type="text" placeholder="New todo.." onKeyDown={addtodoFront}/><br/><br/></>}
+      <><input type="text" placeholder="New todo.." onKeyDown={addtodoFront}/><br/></>}
       {Object.keys(all_todos).map((index) => (
         <div key={index} className={all_todos[index].done ? "fontdarker" : ""}>
           <label id={index + "check"}><input checked={all_todos[index].done} id={index + "checkbox"} type='checkbox' onClick={() => checkboxClick(index)}/></label>
           <h4 id={index + "title"} style={{display: "inline",cursor: "pointer", textDecoration: all_todos[index].done ? "line-through" : "none"}}>{all_todos[index].title} </h4>
-          <FontAwesomeIcon id={index + "edit"} onClick={() => clickTitle(index)} icon={faPencil} style={{width: "13px", height: "13px", cursor:"pointer"}}/>&#xA0;
-          <FontAwesomeIcon id={index + "delete"} onClick={() => deleteTodo(all_todos[index].title)} icon={faTrashCan} style={{width: "13px", height: "13px", cursor:"pointer"}}/><br/><br/>
+          <FontAwesomeIcon id={index + "edit"} onClick={() => clickTitle(index)} icon={faPencil} style={{width: "18px", height: "18px", cursor:"pointer"}}/>&#xA0;
+          <FontAwesomeIcon id={index + "delete"} onClick={() => deleteTodo(all_todos[index].title)} icon={faTrashCan} style={{width: "18px", height: "18px", cursor:"pointer"}}/><br/><br/>
         </div>
       ))}
     </Layout>

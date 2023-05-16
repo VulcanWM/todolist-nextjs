@@ -47,7 +47,7 @@ body {
   background-color: var(--background);
   font-family: 'Open Sans', sans-serif;
   word-wrap: break-word;
-  font-size: 118.75%;
+  font-size: 125%;
 }
 
 
@@ -91,4 +91,9 @@ input[type=text] {
 
 input[type=text]:focus {
   border-color: var(--dark-accent);
+}
+
+input[type=checkbox]{
+  transform: scale(1.5);
+  margin-right: 10px;
 }
