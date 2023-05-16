@@ -47,7 +47,10 @@ body {
   background-color: var(--background);
   font-family: 'Open Sans', sans-serif;
   word-wrap: break-word;
+  font-size: 118.75%;
 }
+
+
 
 @media (prefers-color-scheme: dark) {
   html {
