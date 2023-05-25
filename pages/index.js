@@ -9,7 +9,7 @@ export default function Home( ) {
       <Layout pageTitle="Home">
         <div className={styles.content}>
           <p><strong>Sign in with GitHub to view your TodoList!</strong></p>
-          <br />
+          <br/>
           <button onClick={() => signIn()}>Sign in</button>
         </div>
       </Layout>
