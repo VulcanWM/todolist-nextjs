@@ -1,6 +1,6 @@
 import Head from 'next/head';
 
-export const siteTitle = "Regular Habits";
+export const siteTitle = "TodoList Next.js";
 
 export default function Layout({ pageTitle, children }) {
   const title = `${siteTitle} - ${pageTitle}`;

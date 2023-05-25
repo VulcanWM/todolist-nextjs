@@ -19,7 +19,8 @@
 }
 
 .fontdarker {
-  color: var(--light-font)
+  color: var(--light-font);
+  text-decoration: line-through;
 }
 
 @media (prefers-color-scheme: dark) {
