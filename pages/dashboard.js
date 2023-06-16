@@ -174,7 +174,6 @@ export default function Home( { user } ) {
         ))}
       </div>
       <h2>All todos</h2>
-      <button className="button" onClick={() => addErrorMessage("msg")}>Add Error</button>
       {all_todos.length>=20?<></>:
       <><input type="text" placeholder="New todo.." onKeyDown={addtodoFront}/><br/></>}
       {Object.keys(all_todos).map((index) => (
