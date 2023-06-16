@@ -24,6 +24,10 @@ export default function Home( { user } ) {
 
   const [errorMessages, setErrorMessages] = useState([])
 
+  function addErrorMessage(msg){
+    setErrorMessages(errorMessages => [...errorMessages, msg]);
+  }
+
   const all_todos_list = user.todo
   const [all_todos, setAlltodos] = useState(all_todos_list)
 
@@ -51,7 +55,7 @@ export default function Home( { user } ) {
         if (json.success == true){
           setAlltodos(json.data);
         } else {
-          console.log(json.msg)
+          addErrorMessage(json.msg)
         }
       });
     } else {
@@ -94,7 +98,7 @@ export default function Home( { user } ) {
       if (json.success == true){
         setAlltodos(json.data);
       } else {
-        console.log(json.msg)
+        addErrorMessage(json.msg)
       }
     });
   }
@@ -118,7 +122,7 @@ export default function Home( { user } ) {
             setAlltodos(json.data);
             event.target.value = ""
           } else {
-            console.log(json.msg)
+            addErrorMessage(json.msg)
           }
         });
       }
@@ -126,7 +130,6 @@ export default function Home( { user } ) {
   };
 
   function checkboxClick(index) {
-    console.log(index)
     const newStatus = document.getElementById(index + "checkbox").checked
     const title = all_todos[index].title
     fetch("/api/change_todo_status", {
@@ -144,7 +147,7 @@ export default function Home( { user } ) {
       if (json.success == true){
         setAlltodos(json.data);
       } else {
-        console.log(json.msg)
+        addErrorMessage(json.msg)
       }
     });
   }
@@ -158,7 +161,13 @@ export default function Home( { user } ) {
         <button onClick={() => signOut()}>Sign out</button>
       </div>
       :<></>}
+      {errorMessages.map((msg) => (
+        <div className={styles.error}>
+          <p>{msg}</p>
+        </div>
+      ))}
       <h2>All todos</h2>
+      <button onClick={() => addErrorMessage("msg")}>Add Error</button>
       {all_todos.length>=20?<></>:
       <><input type="text" placeholder="New todo.." onKeyDown={addtodoFront}/><br/></>}
       {Object.keys(all_todos).map((index) => (
