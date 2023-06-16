@@ -10,7 +10,7 @@ export default function Home( ) {
         <div className={styles.content}>
           <p><strong>Sign in with GitHub to view your TodoList!</strong></p>
           <br/>
-          <button onClick={() => signIn()}>Sign in</button>
+          <button className="button" onClick={() => signIn()}>Sign in</button>
         </div>
       </Layout>
   );

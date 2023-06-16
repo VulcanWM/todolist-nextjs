@@ -28,6 +28,10 @@ export default function Home( { user } ) {
     setErrorMessages(errorMessages => [...errorMessages, msg]);
   }
 
+  function removeErrorMessage(index){
+    setErrorMessages((errorMessages) => errorMessages.filter((_, i) => i !== index));
+  }
+
   const all_todos_list = user.todo
   const [all_todos, setAlltodos] = useState(all_todos_list)
 
@@ -158,18 +162,19 @@ export default function Home( { user } ) {
       {pfpClicked? 
       <div className={styles.profileinfo + " glass"}>
         <h4>Signed in as <strong>{user.username}</strong></h4>
-        <button onClick={() => signOut()}>Sign out</button>
+        <button className="button" onClick={() => signOut()}>Sign out</button>
       </div>
       :<></>}
       <div className={styles.container}>
-        {errorMessages.map((msg) => (
+        {errorMessages.map((msg, i) => (
           <div className={styles.error}>
             <p>{msg}</p>
+            <button classname={styles.errorbtn} onClick={() => removeErrorMessage(i)}>X</button>
           </div>
         ))}
       </div>
       <h2>All todos</h2>
-      <button onClick={() => addErrorMessage("msg")}>Add Error</button>
+      <button className="button" onClick={() => addErrorMessage("msg")}>Add Error</button>
       {all_todos.length>=20?<></>:
       <><input type="text" placeholder="New todo.." onKeyDown={addtodoFront}/><br/></>}
       {Object.keys(all_todos).map((index) => (

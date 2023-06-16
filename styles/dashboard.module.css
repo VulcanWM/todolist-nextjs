@@ -36,4 +36,13 @@
     padding-top:2px;
     padding-bottom:2px;
     margin:10px;
+    border-radius:15px;
+}
+
+.errorbtn {
+    color: var(--font-color);
+    cursor: pointer;
+    transition: 0.2s;
+    font-size: 17px;
+    background-color: var(--background);
 }

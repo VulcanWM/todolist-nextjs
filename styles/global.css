@@ -59,7 +59,7 @@ body {
   }
 }
 
-button,input[type=submit] {
+.button {
   padding: 10px;
   padding-left: 20px;
   padding-right: 20px;
@@ -72,7 +72,7 @@ button,input[type=submit] {
   font-size: 17px;
 }
 
-button:hover,input[type=submit]:hover {
+.button:hover {
   border-color: var(--dark-accent);
 }
 
