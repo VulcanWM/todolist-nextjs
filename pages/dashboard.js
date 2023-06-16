@@ -161,11 +161,13 @@ export default function Home( { user } ) {
         <button onClick={() => signOut()}>Sign out</button>
       </div>
       :<></>}
-      {errorMessages.map((msg) => (
-        <div className={styles.error}>
-          <p>{msg}</p>
-        </div>
-      ))}
+      <div className={styles.container}>
+        {errorMessages.map((msg) => (
+          <div className={styles.error}>
+            <p>{msg}</p>
+          </div>
+        ))}
+      </div>
       <h2>All todos</h2>
       <button onClick={() => addErrorMessage("msg")}>Add Error</button>
       {all_todos.length>=20?<></>:

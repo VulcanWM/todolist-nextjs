@@ -19,3 +19,21 @@
     padding: 5px;
     text-align: center;
 }
+
+.container {
+    display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.error {
+    background-color: var(--font-color);
+    color: var(--red);
+    text-align: center;
+    width:350px;
+    padding-top:2px;
+    padding-bottom:2px;
+    margin:10px;
+}
